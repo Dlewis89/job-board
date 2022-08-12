@@ -17,11 +17,11 @@ class LoginController extends Controller
             return response()->errorResponse('invalid credentials', [], 401);
         }
 
-        if (!auth()->attempt(['email' => $request->email, 'password' => $request->password])){
+        if (!auth('web')->attempt(['email' => $request->email, 'password' => $request->password])){
             return response()->errorResponse('invalid credentials', [], 401);
         }
 
-        $token = auth()->user()->createToken('job board');
+        $token = auth('web')->user()->createToken('job board');
 
         $data = array_merge(['token' => $token->accessToken], auth()->user()->toArray());
 

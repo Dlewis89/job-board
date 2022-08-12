@@ -22,5 +22,5 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::controller(JobController::class)->middleware('auth:api')->prefix('jobs')->group(function() {
-    Route::post('', 'store');
+    Route::post('', 'store')->middleware('can:employer');
 });

@@ -13,7 +13,7 @@ class RegisterController extends Controller
     {
         try {
             $user = User::create($request->validated());
-
+            $user->syncPermissions($request->permission);
             return response()->success('user created', $user, 201);
         } catch(Exception $e) {
             report($e);
