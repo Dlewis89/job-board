@@ -125,6 +125,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

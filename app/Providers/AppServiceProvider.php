@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
+use App\Contracts\PaymentGatewayInterface;
+use App\Services\PaymentGateways\Stripe;
+use Illuminate\Support\Facades\Http;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(PaymentGatewayInterface::class, Stripe::class);
     }
 
     /**
@@ -26,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Response::macro('caps', function ($value) {
             return Response::make(strtoupper($value));
+        });
+
+        Http::macro('stripe', function () {
+            return Http::withToken(config('app.stripe_secret_key'))->baseUrl('https://api.stripe.com/v1')->asForm();
         });
     }
 }

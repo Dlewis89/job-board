@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\JobController;
+use App\Http\Controllers\Job\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +20,10 @@ Route::prefix('auth')->group(function() {
     Route::post('login', [LoginController::class, 'login']);
 });
 
-Route::controller(JobController::class)->middleware('auth:api')->prefix('jobs')->group(function() {
-    Route::post('', 'store')->middleware('can:employer');
+Route::controller(JobController::class)->middleware(['auth:api', 'can:employer'])->prefix('jobs')->group(function() {
+    Route::get('', 'index')->withoutMiddleware(['auth:api', 'can:employer']);
+    Route::post('', 'store');
+    Route::patch('{job}', 'update');
+    Route::post('feature/{job}', 'featureJob');
+    Route::delete('{job}', 'destroy');
 });

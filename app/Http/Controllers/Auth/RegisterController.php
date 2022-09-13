@@ -4,16 +4,23 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\Auth\RegisterUserRequest;
 use Exception;
+use App\Events\WelcomeMailEvent;
+use App\Services\Auth\RegisterService;
+use App\Http\Resources\User\UserResource;
 
 class RegisterController extends Controller
 {
+    public function __construct(private RegisterService $registerService)
+    {
+    }
+
     public function create(RegisterUserRequest $request)
     {
         try {
-            $user = User::create($request->validated());
-            $user->syncPermissions($request->permission);
+            $user = $this->registerService->create($request->validated());
+            event(new WelcomeMailEvent($user));
             return response()->success('user created', $user, 201);
         } catch(Exception $e) {
             report($e);
