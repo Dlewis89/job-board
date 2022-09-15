@@ -126,6 +126,7 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
+    'feature_job_stripe_price_id' => env('FEATURE_JOB_STRIPE_PRICE_ID'),
 
     /*
     |--------------------------------------------------------------------------

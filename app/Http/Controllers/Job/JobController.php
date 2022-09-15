@@ -11,6 +11,8 @@ use App\Services\Job\JobService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\PaymentGatewayInterface;
+use App\Exceptions\CustomException;
+use Exception;
 
 class JobController extends Controller
 {
@@ -26,7 +28,7 @@ class JobController extends Controller
                 Skill::class
             ])->get();
             return response()->success('success', $jobs);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             report($e);
             return response()->errorResponse('something went wrong');
         }
@@ -38,7 +40,7 @@ class JobController extends Controller
         try {
             $job = $this->jobService->create($request->all());
             return response()->success('job created successfully', $job, 201);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             report($e);
             return response()->errorResponse('something went wrong');
         }
@@ -50,7 +52,7 @@ class JobController extends Controller
             $updated_job = tap($job)->update($request->except(['skills', '_token']));
             $this->jobService->sync_skills($updated_job, $request->skills);
             return response()->success('job updated successfully');
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             report($e);
             return response()->errorResponse('something went wrong');
         }
@@ -61,14 +63,30 @@ class JobController extends Controller
         try {
             $job->delete();
             return response()->success('job deleted successfully');
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             report($e);
             return response()->errorResponse('something went wrong');
         }
     }
 
-    public function featureJob()
+    public function featureJob(Job $job)
     {
-        return $this->paymentGatewayInterface->initializeTransaction('test@test.com', 100);
+        try {
+            $user = Auth::user();
+
+            $response = $this->paymentGatewayInterface
+                ->setTransactionInitiator($user)
+                ->setTransactionOwner($job)
+                ->initializeTransaction($user->email, 0, config('app.feature_job_stripe_price_id'));
+
+            return response()->success('checkout link generated', ['url' => $response['url']]);
+        } catch(CustomException $e) {
+            report($e);
+            return response()->errorResponse($e->getMessage(), [], $e->getCode());
+        } catch(Exception $e) {
+            report($e);
+            return response()->errorResponse('something went wrong');
+        }
+
     }
 }

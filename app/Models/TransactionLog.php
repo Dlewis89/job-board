@@ -9,6 +9,10 @@ class TransactionLog extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
+
+
     public function initiator()
     {
         return $this->morphTo("initiator");

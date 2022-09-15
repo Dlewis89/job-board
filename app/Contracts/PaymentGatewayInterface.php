@@ -10,5 +10,5 @@ interface PaymentGatewayInterface
 
     public function setTransactionOwner(Model $owner);
 
-    public function initializeTransaction(string $email, int $amount, string $currency = "usd", string $callback = null, array $metadata = []);
+    public function initializeTransaction(string $email, int $amount, string $priceId, string $currency = "usd", string $callback = null, array $metadata = []);
 }
