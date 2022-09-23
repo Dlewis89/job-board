@@ -77,7 +77,7 @@ class JobController extends Controller
             $response = $this->paymentGatewayInterface
                 ->setTransactionInitiator($user)
                 ->setTransactionOwner($job)
-                ->initializeTransaction($user->email, 0, config('app.feature_job_stripe_price_id'));
+                ->initializeTransaction($user->email, 0, config('app.feature_job_stripe_price_id'), 'usd', null, ['job_id' => $job->id]);
 
             return response()->success('checkout link generated', ['url' => $response['url']]);
         } catch(CustomException $e) {

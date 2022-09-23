@@ -84,6 +84,9 @@ class Stripe implements PaymentGatewayInterface
             // handle exception
             $amount = $getPrice['unit_amount'] / 100;
         }
+
+        $reference = PaymentService::generateRef();
+
         // get the payload for stripe
         $payload = [
             'success_url' => 'https://example.com/success',
@@ -95,6 +98,9 @@ class Stripe implements PaymentGatewayInterface
               ],
             ],
             'mode' => 'payment',
+            'payment_intent_data' => [
+                'metadata' => array_merge(['reference' => $reference], $metadata),
+            ]
         ];
 
         // hit the stripe endpoint
@@ -109,7 +115,7 @@ class Stripe implements PaymentGatewayInterface
         //other wise create a pending transaction log
         TransactionLog::create([
             'provider' => class_basename($this),
-            'reference' => PaymentService::generateRef(),
+            'reference' => $reference,
             'amount' => $amount,
             'initiator_id' => $this->initiator_id,
             'initiator_type' => $this->initiator_type,

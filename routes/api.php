@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Job\JobController;
+use App\Http\Controllers\Payment\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,5 @@ Route::controller(JobController::class)->middleware(['auth:api', 'can:employer']
     Route::post('feature/{job}', 'featureJob');
     Route::delete('{job}', 'destroy');
 });
+
+Route::post('/stripe-webhook', [PaymentController::class, 'webhook']);

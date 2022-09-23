@@ -31,6 +31,10 @@ class AuthServiceProvider extends ServiceProvider
             Passport::routes();
         }
 
+        Passport::tokensExpireIn(now()->addDay());
+        Passport::refreshTokensExpireIn(now()->addDay());
+        Passport::personalAccessTokensExpireIn(now()->addDay());
+
         Password::defaults(function () {
             $rule = Password::min(8);
 
