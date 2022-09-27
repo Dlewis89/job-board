@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Contracts\PaymentGatewayInterface;
 use App\Services\PaymentGateways\Stripe;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
+
         Response::macro('caps', function ($value) {
             return Response::make(strtoupper($value));
         });
