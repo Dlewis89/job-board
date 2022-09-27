@@ -20,7 +20,7 @@ return new class extends Migration
             $table->double('amount');
             $table->morphs('initiator');
             $table->morphs('owner');
-            $table->json('metadata')->nullable();
+            $table->text('metadata')->nullable();
             $table->timestamps();
         });
     }
