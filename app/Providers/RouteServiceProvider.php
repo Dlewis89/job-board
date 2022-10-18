@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/employer.php'));
 
             Route::prefix('api/v1')
-            ->group(base_path('routes/employee.php'));
+            ->group(base_path('routes/candidate.php'));
         });
     }
 

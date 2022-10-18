@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Events\WelcomeMailEvent;
 use App\Models\User;
 use App\Services\Auth\LoginService;
 
@@ -14,7 +15,7 @@ class RegisterService
     {
         $user = User::create($request);
         $user->syncPermissions($request['permission']);
-
+        event(new WelcomeMailEvent($user));
         $token = $this->loginService->create_token($user);
 
         return $this->loginService->append_token_to_user($token, $user);

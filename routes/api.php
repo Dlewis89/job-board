@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Job\JobController;
 use App\Http\Controllers\Payment\PaymentController;
@@ -30,3 +31,7 @@ Route::controller(JobController::class)->middleware(['auth:api', 'can:employer']
 });
 
 Route::post('/stripe-webhook', [PaymentController::class, 'webhook']);
+
+Route::controller(ApplicationController::class)->middleware('can:candidate')->prefix('applications')->group(function() {
+    Route::post('', 'store');
+});

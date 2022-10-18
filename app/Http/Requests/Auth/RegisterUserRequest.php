@@ -32,7 +32,7 @@ class RegisterUserRequest extends FormRequest
             'permission' => ['required', Rule::in([
                 'admin',
                 'employer',
-                'employee'
+                'candidate'
             ])],
         ];
     }

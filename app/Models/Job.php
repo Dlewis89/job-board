@@ -25,4 +25,9 @@ class Job extends Model
     {
         return $this->belongsToMany(Skill::class, 'created_job_skill', 'created_job_id', 'skill_id')->withPivot('years_of_experience');
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
