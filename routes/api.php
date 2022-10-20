@@ -22,12 +22,8 @@ Route::prefix('auth')->group(function() {
     Route::post('login', [LoginController::class, 'login']);
 });
 
-Route::controller(JobController::class)->middleware(['auth:api', 'can:employer'])->prefix('jobs')->group(function() {
-    Route::get('', 'index')->withoutMiddleware(['auth:api', 'can:employer']);
-    Route::post('', 'store');
-    Route::patch('{job}', 'update');
-    Route::post('feature/{job}', 'featureJob');
-    Route::delete('{job}', 'destroy');
+Route::controller(JobController::class)->prefix('jobs')->group(function() {
+    Route::get('', 'index');
 });
 
 Route::post('/stripe-webhook', [PaymentController::class, 'webhook']);

@@ -7,10 +7,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Application;
+use App\Models\Job;
 use App\Http\Requests\Application\ApplicationRequest;
 
 class ApplicationController extends Controller
 {
+    public function index(Request $request, $id)
+    {
+        $job = Job::with('applications')->find($id);
+        abort_if(auth()->id() !== $job->user_id, 403, "Unauthorized action");
+        return $job->applications()->where('is_viewed', true)->get();
+    }
+    
     public function store(ApplicationRequest $request)
     {
         try {
