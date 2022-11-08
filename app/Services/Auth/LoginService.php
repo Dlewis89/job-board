@@ -30,6 +30,7 @@ class LoginService
 
     public function create_token(User $user)
     {
+        dd( $user->createToken('job board'));
         return $user->createToken('job board');
     }
 
