@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
@@ -211,13 +212,13 @@ class RegisterControllerTest extends TestCase
                     ]
                 ]
             );
-
             Event::assertListening(WelcomeMailEvent::class, WelcomeMailEventListener::class );
             Event::assertDispatched(function (WelcomeMailEvent $event){
                 return $event->user->name === $this->data['name'];
             });
 
             // mock the hash facade and mock passport token
+            $this->assertTrue(Hash::check($this->data['password'], User::whereEmail($this->data['email'])->first()->password));
             unset($this->data['password']);
             unset($this->data['password_confirmation']);
             unset($this->data['permission']);

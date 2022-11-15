@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Services\Auth\LoginService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\HasApiTokens;
@@ -69,8 +70,8 @@ class LoginControllerTest extends TestCase
         );
         \Artisan::call('passport:install --force');
 
-        $mock = $this->mock(HasApiTokens::class, function (MockInterface $mock) {
-            $mock->shouldReceive('createToken')->withAnyArgs()->andReturn(['accessToken' => "this-is-a-token"]);
+        $this->partialMock(LoginService::class, function (MockInterface $mock) {
+            $mock->shouldReceive('create_token')->once()->andReturn((object)['accessToken' => "this-is-a-test-token"]);
         });
 
 
@@ -80,7 +81,7 @@ class LoginControllerTest extends TestCase
                     "status" => true,
                     "message" => "login successful",
                     "data" => [
-                        // "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGIyYmM4ZGYxOWNjMDg5OTFlZjQ2OTZjOTNiMGI3ZjdhMDIzYzUzOTQyYWU1Njk0Yjk3MGY4N2IwOTRiZDcwZjVlMzZhZTBlNWNkYTZjZDUiLCJpYXQiOjE2Njc5Mjc4NTAuODk0NjA2LCJuYmYiOjE2Njc5Mjc4NTAuODk0NjE1LCJleHAiOjE2NjgwMTQyNTAuODc3MTA4LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.BF9kCXxnuFFDi_pWrdiXk1z_4aLUNoDrEeBrJK1jLBpLv1LJAJBQdgiVoZhaTta9NgIstSqPE3t7OuI5_0eG7-WGJSFoTbXxjvX4KthBHaocBQOENV4NVUb_RFxFCky2KLs7pFhosjUQOT55uyCCuofB4pNmfBPhCU-1KMhT-R6OTFj7ZBauGC7tHtKDSW75JSrOI41Y0tfefeIc-jNnLh-lgMui5JF6eVxc7TfUHUXyCoaMxgbGpQ_Qxmri2319tKkxrwXOrcjW8y86SHtM-anhgR6hR4Qlj_52aCt4__i5WgHGLVZsQQSwRI1iztoqQOKj3HHJW48F2rKDGSeRYpqEj16Z8bnDO-IqgkmrgGmVgzD_r554Sx4wsFc0YzlWfvY_VdypwaAZhqiG4YjRowoqSc9jy-OWVqDC8y0hox5DOciJ8pjf-hKsFD3TTNXPOPecBQq3iweTPrOBbD7660Cnl_CAQIRsb5iLZqCJa_d2gYNlY0BPNCkZI0qsqQtr542Tok4Mk_E_PnpC0mYBDqHu--Z4K3BDszcshyGRy_0mBEhCH6frQtvxSBxOrypiUymKO2AFVxDYjxUO87LaBQuD8m-avwOtAyZ7yAuvkWqPj3PpDARf_t26N4xX_4wPHASi3UL23qNIIgJ-v0zUGYlzDOTfBXXwwnqiDsrI7Q4",
+                        "token" => "this-is-a-test-token",
                         "email" => $user->email,
                     ]
             ]);
