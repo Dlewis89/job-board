@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterUserRequest;
 use Exception;
 use App\Services\Auth\RegisterService;
-use App\Http\Resources\User\UserResource;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Utils\Util;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
@@ -35,5 +36,12 @@ class RegisterUserRequest extends FormRequest
                 'candidate'
             ])],
         ];
+    }
+
+    public function validated($key = null, $default = null): array
+    {
+        $validated = $this->validator->validated();
+        $validated['referral_code'] = Util::generate_referral_code();
+        return $validated;
     }
 }

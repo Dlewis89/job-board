@@ -17,7 +17,6 @@ class RegisterService
         $user->syncPermissions($request['permission']);
         event(new WelcomeMailEvent($user));
         $token = $this->loginService->create_token($user);
-
         return $this->loginService->append_token_to_user($token, $user);
     }
 }

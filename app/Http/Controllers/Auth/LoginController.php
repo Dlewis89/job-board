@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Services\Auth\LoginService;
 use App\Exceptions\CustomException;
 use App\Http\Resources\User\UserResource;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -26,6 +27,5 @@ class LoginController extends Controller
             report($e);
             return response()->errorResponse($e->getMessage(), [], 500);
         }
-
     }
 }

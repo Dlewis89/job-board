@@ -38,7 +38,7 @@ class JobController extends Controller
     public function store(StoreJobRequest $request)
     {
         try {
-            $job = $this->jobService->create($request->all());
+            $job = $this->jobService->create($request->validated());
             return response()->success('job created successfully', $job, 201);
         } catch(Exception $e) {
             report($e);

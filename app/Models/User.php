@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Utils\Util;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'referral_code'
     ];
 
     /**
@@ -56,6 +58,23 @@ class User extends Authenticatable
         return Attribute::make(
             set: fn ($value) => Hash::make($value),
         );
+    }
+
+    protected function referralCode(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->find_or_create_referral_code($value),
+        );
+    }
+
+    protected function find_or_create_referral_code($value)
+    {
+        if ($value) {
+            return $value;
+        }
+        $referral_code =  Util::generate_referral_code();
+        $this->update(['referral_code' => $referral_code]);
+        return $referral_code;
     }
 
     public function jobs()

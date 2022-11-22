@@ -31,7 +31,9 @@ class StoreJobRequest extends FormRequest
             "responsibilities" => ["string", "required"],
             "benefits" => ["string", "required"],
             "skills" => ["min:1", "array", "required"],
-            "skills.*.id" => ["exists:skills,id"]
+            "skills.*.id" => ["exists:skills,id"],
+            "skills.*.years_of_experience" => ["integer", "required"],
+            "campaign_amount" => ["integer", "nullable"]
         ];
     }
 

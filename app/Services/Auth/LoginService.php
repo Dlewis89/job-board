@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Exceptions\CustomException;
 
@@ -38,7 +39,7 @@ class LoginService
         if(!is_object($token) || !property_exists($token, 'accessToken')) {
             throw new CustomException('Invalid data', 400);
         }
-        return array_merge(['token' => $token->accessToken], $user->toArray());
+        return array_merge((new UserResource($user))->toArray(request()), ['token' => $token->accessToken]);
     }
 
 }
