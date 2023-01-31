@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\PaymentGatewayInterface;
-use App\Services\PaymentGateways\Stripe;
+use App\Services\PaymentGateway\Stripe;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 

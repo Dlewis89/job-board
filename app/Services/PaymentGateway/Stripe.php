@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Services\PaymentGateways;
+namespace App\Services\PaymentGateway;
+
 use App\Contracts\PaymentGatewayInterface;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\CustomException;

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Services\PaymentGateways;
+namespace App\Services\PaymentGateway;
+
 use App\Models\TransactionLog;
 
 class PaymentService
